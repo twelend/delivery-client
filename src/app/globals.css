@@ -1,26 +1,75 @@
+@import "antd/dist/reset.css";
 @import "tailwindcss";
 
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-color) var(--primary-color-light);
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --primary-color: #9d9c63;
+  --primary-color-light: #9d9c638c;
+  --primary-bg-color: #f0f0e8;
+  --text-dark: #555555;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--primary-bg-color);
+  color: var(--text-dark);
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+button,
+.btn {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+  border: none;
+}
+
+input,
+textarea,
+select {
+  font-family: "Montserrat", sans-serif;
+}
+
+.tabs .ant-tabs-nav {
+  margin-bottom: 0;
+}
+
+.tabs .ant-tabs-nav::before {
+  border: none;
+}
+
+.tabs .ant-tabs-tab {
+  padding: 12px 24px;
+  font-size: 16px;
+  color: var(--text-dark);
+  border-radius: 0;
+  margin: 0;
+}
+
+.tabs .ant-tabs-tab:hover {
+  color: var(--primary-color);
+}
+
+.tabs .ant-tabs-tab-active {
+  color: var(--primary-color);
+}
+
+.tabs .ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: var(--text-dark) !important;
+  font-weight: bold;
+}
+
+.tabs .ant-tabs-ink-bar {
+  background-color: var(--primary-color);
 }
