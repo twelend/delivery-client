@@ -19,7 +19,7 @@ export function useRegistrationMutation() {
       toast.success("Вы успешно зарегистрировались", {
         description: "Добро пожаловать! Войдите в аккаунт, чтобы начать пользоваться сервисом",
       });
-      router.push("/profile");
+      // router.push("/profile");
     },
     onError: (error) => {
       toast("Пользователь уже существует", {

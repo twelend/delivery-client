@@ -15,22 +15,17 @@ export function useLoginMutation() {
       return authService.login(values);
     },
     onSuccess: (response: any) => {
-      
-      if (response.status === 400) {
-        toast.error("Пользователь не существует");
-      } else if (response.status === 403){
-        toast.error("Неверный логин или пароль");
-      } else {
-        toast.success("Успешный вход", {
-          description:
-            "Осторожно, после входа может возникнуть чувство голода!",
-          duration: 3000,
-        });
-        router.push("/profile");
-      }
+      toast.success("Успешный вход", {
+        description:
+          "Осторожно, после входа может возникнуть чувство голода!",
+        duration: 3000,
+      });
+      router.push("/profile");
     },
     onError: (error) => {
-      messageHandler(error);
+      toast.error("Неверный логин или пароль", {
+        duration: 3000,
+      });
     },
   });
 

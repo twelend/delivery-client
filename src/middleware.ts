@@ -1,12 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export default function middleware(request: NextRequest) {
-  const { url, headers } = request;
+  const { url } = request;
 
-  const authHeader = headers.get("Authorization");
-
-  const token = authHeader?.split(" ")[1];
-  console.log(token);
+  const token = request.cookies.get('auth-token')?.value;
+  
   const isAuthPage = url.includes("/auth");
 
   if (isAuthPage) {
@@ -16,9 +14,9 @@ export default function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // if (!token) {
-  //   return NextResponse.redirect(new URL("/auth/login", url));
-  // }
+  if (!token) {
+    return NextResponse.redirect(new URL("/auth/login", url));
+  }
 }
 
 export const config = {

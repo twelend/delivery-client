@@ -1,6 +1,10 @@
+"use client";
+
+import CreateOrder from "@/features/order/CreateOrder";
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, Col, Row, Typography } from "antd";
-import React from "react";
+import { Button, Col, Modal, Row, Tooltip, Typography } from "antd";
+import React, { useState } from "react";
+import { toast } from "sonner";
 
 const { Title, Text } = Typography;
 
@@ -13,6 +17,9 @@ export default function ProfileHeader({
   userInfo: any;
   isMobile: boolean;
 }) {
+  const [visibleCreateOrder, setVisibleCreateOrder] = useState(false);
+  
+  
   return (
     <>
       {isMobile ? (
@@ -43,6 +50,18 @@ export default function ProfileHeader({
               height: 48,
               fontSize: 16,
             }}
+            onClick={() => {
+              if (!userInfo.address) {
+                toast.error("Для создания заказа необходимо добавить адрес!", {
+                  position: "top-center",
+                  duration: 3000,
+                  style: {
+                    backgroundColor: "var(--primary-bg-color)",
+                    color: "var(--text-dark)",
+                  },
+                });
+              }
+            }}
           >
             Создать новый заказ
           </Button>
@@ -53,6 +72,7 @@ export default function ProfileHeader({
             background: "var(--primary-color)",
             color: "white",
             padding: "40px 0",
+            position: "relative",
           }}
         >
           <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
@@ -66,28 +86,42 @@ export default function ProfileHeader({
                 </Text>
               </Col>
               <Col>
-                <Button
-                  type="primary"
-                  size="large"
-                  icon={<PlusOutlined />}
-                  style={{
-                    backgroundColor: "white",
-                    color: "var(--primary-color)",
-                    borderColor: "white",
-                    fontWeight: 600,
-                    height: 48,
-                    fontSize: 16,
-                    paddingLeft: 24,
-                    paddingRight: 24,
-                  }}
+                <Tooltip
+                  title={`${!userInfo?.address ? "Для создания заказа необходимо заполнить профиль!" : "Создать новый заказ"}`}
+                  placement="top"
                 >
-                  Создать новый заказ
-                </Button>
+                  <Button
+                    type="primary"
+                    size="large"
+                    icon={<PlusOutlined />}
+                    block
+                    style={{
+                      backgroundColor: "white",
+                      color: "var(--primary-color)",
+                      borderColor: "var(--primary-color)",
+                      fontWeight: 600,
+                      height: 48,
+                      fontSize: 16,
+                    }}
+                    disabled={!userInfo?.address}
+                    onClick={() => setVisibleCreateOrder(true)}
+                  >
+                    Создать новый заказ
+                  </Button>
+                </Tooltip>
               </Col>
             </Row>
           </div>
         </div>
       )}
+      <Modal
+        title="Новый заказ"
+        open={visibleCreateOrder}
+        onCancel={() => setVisibleCreateOrder(false)}
+        footer={null}
+      >
+        <CreateOrder userInfo={userInfo} />
+      </Modal>
     </>
   );
 }

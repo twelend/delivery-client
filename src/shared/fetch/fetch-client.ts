@@ -75,7 +75,7 @@ export class FetchClient {
       headers[key] = value;
     });
 
-    let data: any;
+    const data = await response.json();
 
     return {
       data,

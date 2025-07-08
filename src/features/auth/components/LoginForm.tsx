@@ -6,7 +6,6 @@ import { Button, Form, Input } from "antd";
 import { useLoginMutation } from "@/hooks/auth/useLoginMutation";
 import { TypeLoginSchema } from "../schemes/login.schema";
 
-const SERVER_URL = process.env.SERVER_URL;
 
 export default function LoginForm() {
   const [form] = Form.useForm();
@@ -14,17 +13,9 @@ export default function LoginForm() {
   const { login, isLoadingLogin } = useLoginMutation();
 
   const onFinish = async (values: TypeLoginSchema) => {
-    // login({ values });
-    
-    const res = await fetch(`https://yarden.tech/webhook/izhgoodfood/login`, {
-      method: "POST",
-      body: JSON.stringify(values),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    console.log("res headers", res.headers);
+    login({ values });
   };
+  
   return (
     <div className="flex justify-center items-center h-screen p-2">
       <AuthWrapper

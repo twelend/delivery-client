@@ -73,3 +73,31 @@ select {
 .tabs .ant-tabs-ink-bar {
   background-color: var(--primary-color);
 }
+
+.ant-select-selector {
+  border-color: var(--primary-color) !important;
+}
+
+.ant-select-selection-item {
+  color: var(--text-dark) !important;
+}
+
+.ant-select-item-option-active {
+  background-color: var(--primary-bg-color) !important;
+  color: #000 !important;
+}
+.ant-select-focused,
+.ant-select-focused .ant-select-selector {
+  box-shadow: 0 0 10px 0 #9d9c6353 !important;
+  border-color: var(--primary-color) !important;
+}
+
+.ant-select-item-option-selected {
+  background-color: var(--primary-color) !important;
+  color: #fff !important;
+}
+
+.ant-select-item-option-selected:hover {
+  background-color: var(--primary-color) !important;
+  color: #fff !important;
+}
