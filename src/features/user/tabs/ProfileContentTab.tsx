@@ -334,6 +334,8 @@ export const ProfileContentTab = ({
                 />
               </Form.Item>
             </Form>
+          ) : isLoadingUpdateUser ? (
+            <Skeleton active />
           ) : (
             <Row gutter={[16, 24]}>
               <Col xs={24} md={12}>

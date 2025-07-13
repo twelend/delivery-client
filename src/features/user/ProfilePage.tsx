@@ -95,33 +95,33 @@ export default function ProfilePage() {
         </div>
       ),
     },
-    {
-      key: "current",
-      label: (
-        <Space size={isMobile ? "small" : "middle"}>
-          <ShoppingOutlined style={{ fontSize: isMobile ? undefined : 16 }} />
-          <span style={{ fontSize: isMobile ? 14 : 16 }}>Текущий</span>
-          {currentOrder && (
-            <Badge
-              dot
-              color="var(--primary-color)"
-              style={{
-                position: "absolute",
-                top: 0,
-                right: 0,
-              }}
-            />
-          )}
-        </Space>
-      ),
-      children: (
-        <div style={{ padding: isMobile ? "16px 0" : "0" }}>
-          <ErrorBoundary>
-            <CurrentOrderContentTab currentOrder={currentOrder} />
-          </ErrorBoundary>
-        </div>
-      ),
-    },
+    // {
+    //   key: "current",
+    //   label: (
+    //     <Space size={isMobile ? "small" : "middle"}>
+    //       <ShoppingOutlined style={{ fontSize: isMobile ? undefined : 16 }} />
+    //       <span style={{ fontSize: isMobile ? 14 : 16 }}>Текущий</span>
+    //       {currentOrder && (
+    //         <Badge
+    //           dot
+    //           color="var(--primary-color)"
+    //           style={{
+    //             position: "absolute",
+    //             top: 0,
+    //             right: 0,
+    //           }}
+    //         />
+    //       )}
+    //     </Space>
+    //   ),
+    //   children: (
+    //     <div style={{ padding: isMobile ? "16px 0" : "0" }}>
+    //       <ErrorBoundary>
+    //         <CurrentOrderContentTab currentOrder={currentOrder} />
+    //       </ErrorBoundary>
+    //     </div>
+    //   ),
+    // },
     {
       key: "history",
       label: (

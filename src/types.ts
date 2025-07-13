@@ -28,3 +28,30 @@ export interface UserInfo {
   payment_method: "cash" | "transfer" | "terminal" | "qr" | "invoice";
   cutlery_and_napkins: boolean;
 }
+
+export interface MenuItem {
+  id: string;
+  name: string;
+}
+
+export interface DishCategory {
+  category: string;
+  items: MenuItem[];
+}
+
+export interface MenuDay {
+  date: string;
+  dishes: DishCategory[];
+}
+
+export interface MenuModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  menuData: MenuDay[];
+}
+
+export interface SelectedItems {
+  [dayDate: string]: {
+    [category: string]: string[];
+  };
+}

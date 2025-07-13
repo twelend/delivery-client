@@ -1,19 +1,30 @@
 "use client";
 import { useGetCurrenMenu } from "@/hooks";
-import { UserInfo } from "@/types";
-import { Spin } from "antd";
-import React from "react";
+import { MenuDay, UserInfo } from "@/types";
+import { Spin, App } from "antd";
+import React, { useState } from "react";
+import OrderModal from "./components/OrderModal";
 
-export default function CreateOrder({ userInfo }: { userInfo: UserInfo }) {
+export default function CreateOrder({
+  userInfo,
+  isModalOpen,
+  setIsModalOpen,
+}: {
+  userInfo: UserInfo;
+  isModalOpen: boolean;
+  setIsModalOpen: (isModalOpen: boolean) => void;
+}) {
   const { currentMenu, isLoadingCurrentMenu } = useGetCurrenMenu();
   console.log(currentMenu);
   return (
-    <>
+    <App>
       <Spin spinning={isLoadingCurrentMenu}>
-        <div>
-          <h1>Current Menu</h1>
-        </div>
+        <OrderModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          menuData={(currentMenu as any)?.data as MenuDay[]}
+        />
       </Spin>
-    </>
+    </App>
   );
 }

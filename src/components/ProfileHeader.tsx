@@ -18,8 +18,7 @@ export default function ProfileHeader({
   isMobile: boolean;
 }) {
   const [visibleCreateOrder, setVisibleCreateOrder] = useState(false);
-  
-  
+
   return (
     <>
       {isMobile ? (
@@ -60,6 +59,8 @@ export default function ProfileHeader({
                     color: "var(--text-dark)",
                   },
                 });
+              } else {
+                setVisibleCreateOrder(true);
               }
             }}
           >
@@ -87,7 +88,11 @@ export default function ProfileHeader({
               </Col>
               <Col>
                 <Tooltip
-                  title={`${!userInfo?.address ? "Для создания заказа необходимо заполнить профиль!" : "Создать новый заказ"}`}
+                  title={`${
+                    !userInfo?.address
+                      ? "Для создания заказа необходимо заполнить профиль!"
+                      : "Создать новый заказ"
+                  }`}
                   placement="top"
                 >
                   <Button
@@ -104,7 +109,20 @@ export default function ProfileHeader({
                       fontSize: 16,
                     }}
                     disabled={!userInfo?.address}
-                    onClick={() => setVisibleCreateOrder(true)}
+                    onClick={() => {
+                      if (!userInfo.address) {
+                        toast.error("Для создания заказа необходимо добавить адрес!", {
+                          position: "top-center",
+                          duration: 3000,
+                          style: {
+                            backgroundColor: "var(--primary-bg-color)",
+                            color: "var(--text-dark)",
+                          },
+                        });
+                      } else {
+                        setVisibleCreateOrder(true);
+                      }
+                    }}
                   >
                     Создать новый заказ
                   </Button>
@@ -114,14 +132,12 @@ export default function ProfileHeader({
           </div>
         </div>
       )}
-      <Modal
-        title="Новый заказ"
-        open={visibleCreateOrder}
-        onCancel={() => setVisibleCreateOrder(false)}
-        footer={null}
-      >
-        <CreateOrder userInfo={userInfo} />
-      </Modal>
+
+      <CreateOrder
+        userInfo={userInfo}
+        isModalOpen={visibleCreateOrder}
+        setIsModalOpen={setVisibleCreateOrder}
+      />
     </>
   );
 }
