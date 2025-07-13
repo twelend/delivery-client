@@ -22,6 +22,9 @@ import {
 } from "@ant-design/icons";
 import { useState } from "react";
 import { MenuModalProps, SelectedItems } from "@/types";
+import { Input } from "antd";
+
+const { TextArea } = Input;
 
 const { Title, Text } = Typography;
 
@@ -61,13 +64,23 @@ function formatDate(dateString: string): string {
   });
 }
 
+// Новый тип для выбранного блюда
+interface SelectedDish {
+  id: string;
+  comment: string;
+  quantity: number;
+}
+
+// Обновляем тип SelectedItems
+// { [date]: { [category]: SelectedDish[] } }
+
 export default function OrderModal({
   isOpen,
   onClose,
   menuData,
 }: MenuModalProps) {
   const { modal } = App.useApp();
-  const [selectedItems, setSelectedItems] = useState<SelectedItems>({});
+  const [selectedItems, setSelectedItems] = useState<Record<string, Record<string, SelectedDish[]>>>({});
   const [activeTab, setActiveTab] = useState("0");
 
   const toggleItemSelection = (
@@ -79,11 +92,39 @@ export default function OrderModal({
       const daySelections = prev[dayDate] || {};
       const categorySelections = daySelections[category] || [];
 
-      const isSelected = categorySelections.includes(itemId);
-      const newCategorySelections = isSelected
-        ? categorySelections.filter((id) => id !== itemId)
-        : [...categorySelections, itemId];
+      const isSelected = categorySelections.some((item) => item.id === itemId);
+      let newCategorySelections: SelectedDish[];
+      if (isSelected) {
+        newCategorySelections = categorySelections.filter((item) => item.id !== itemId);
+      } else {
+        newCategorySelections = [
+          ...categorySelections,
+          { id: itemId, comment: "", quantity: 1 },
+        ];
+      }
 
+      return {
+        ...prev,
+        [dayDate]: {
+          ...daySelections,
+          [category]: newCategorySelections,
+        },
+      };
+    });
+  };
+
+  const handleCommentChange = (
+    dayDate: string,
+    category: string,
+    itemId: string,
+    comment: string
+  ) => {
+    setSelectedItems((prev) => {
+      const daySelections = prev[dayDate] || {};
+      const categorySelections = daySelections[category] || [];
+      const newCategorySelections = categorySelections.map((item) =>
+        item.id === itemId ? { ...item, comment } : item
+      );
       return {
         ...prev,
         [dayDate]: {
@@ -99,7 +140,19 @@ export default function OrderModal({
     category: string,
     itemId: string
   ) => {
-    return selectedItems[dayDate]?.[category]?.includes(itemId) || false;
+    return (
+      selectedItems[dayDate]?.[category]?.some((item) => item.id === itemId) || false
+    );
+  };
+
+  const getItemComment = (
+    dayDate: string,
+    category: string,
+    itemId: string
+  ) => {
+    return (
+      selectedItems[dayDate]?.[category]?.find((item) => item.id === itemId)?.comment || ""
+    );
   };
 
   const getTotalSelectedItems = () => {
@@ -127,7 +180,18 @@ export default function OrderModal({
   };
 
   const handleSubmitOrder = () => {
-    console.log("Выбранные блюда:", selectedItems);
+    // Формируем итоговый массив
+    const order = Object.entries(selectedItems).map(([date, categories]) => ({
+      date,
+      items: Object.values(categories)
+        .flat()
+        .map((item) => ({
+          dish_id: item.id,
+          comment: item.comment,
+          quantity: 1,
+        })),
+    }));
+    console.log("Заказ:", order);
     modal.success({
       title: "Заказ отправлен!",
       content: `Выбрано блюд: ${getTotalSelectedItems()}`,
@@ -221,13 +285,6 @@ export default function OrderModal({
                               : "1px solid #f0f0f0",
                             transition: "all 0.2s",
                           }}
-                          onChange={() =>
-                            toggleItemSelection(
-                              day.date,
-                              category.category,
-                              item.id
-                            )
-                          }
                         >
                           <Checkbox
                             checked={isSelected}
@@ -236,6 +293,13 @@ export default function OrderModal({
                               padding: "8px",
                               borderRadius: "6px",
                             }}
+                            onChange={() =>
+                              toggleItemSelection(
+                                day.date,
+                                category.category,
+                                item.id
+                              )
+                            }
                           >
                             <Text
                               style={{
@@ -247,6 +311,22 @@ export default function OrderModal({
                               {item.name}
                             </Text>
                           </Checkbox>
+                          {isSelected && (
+                            <TextArea
+                              placeholder="Комментарий" 
+                              value={getItemComment(day.date, category.category, item.id)}
+                              onChange={(e) =>
+                                handleCommentChange(
+                                  day.date,
+                                  category.category,
+                                  item.id,
+                                  e.target.value
+                                )
+                              }
+                              style={{ marginTop: 4, fontSize: 13 }}
+                              autoSize
+                            />
+                          )}
                         </div>
                       );
                     })}

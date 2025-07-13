@@ -85,7 +85,7 @@ Header
 
 Body
 ```json
-[{"date": "2025-06-23", "comment": "", "items": [{"dish_id": 1, "quantity": 1}]}]
+[{"date": "2025-06-23", "items": [{"dish_id": 1, "comment": "", "quantity": 1}]}]
 ```
 
 Response
