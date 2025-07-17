@@ -15,7 +15,6 @@ export default function CreateOrder({
   setIsModalOpen: (isModalOpen: boolean) => void;
 }) {
   const { currentMenu, isLoadingCurrentMenu } = useGetCurrenMenu();
-  console.log(currentMenu);
   return (
     <App>
       <Spin spinning={isLoadingCurrentMenu}>

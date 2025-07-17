@@ -75,7 +75,15 @@ export class FetchClient {
       headers[key] = value;
     });
 
-    const data = await response.json();
+    const text = await response.text();
+    let data = null;
+    if (text) {
+      try {
+        data = JSON.parse(text);
+      } catch (e) {
+        data = text;
+      }
+    }
 
     return {
       data,

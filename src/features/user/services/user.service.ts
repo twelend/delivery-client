@@ -15,7 +15,6 @@ class UserService {
     const responseToken = res.data?.token;
     if (responseToken) {
       tokenUtils.setToken(responseToken);
-      console.log("Токен сохранен в localStorage и cookies");
     } else {
       console.log("Токен не найден в ответе");
     }

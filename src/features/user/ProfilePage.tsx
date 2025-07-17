@@ -1,33 +1,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Badge, Tabs, Space, Skeleton, Button } from "antd";
+import { Tabs, Space, Skeleton } from "antd";
 import {
   UserOutlined,
   HistoryOutlined,
-  ShoppingOutlined,
-  LogoutOutlined,
 } from "@ant-design/icons";
-import {
-  CurrentOrderContentTab,
-  HistoryContentTab,
-  ProfileContentTab,
-} from "./tabs";
+import { HistoryContentTab, ProfileContentTab } from "./tabs";
 import { ProfileHeader } from "@/components";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { useProfile } from "@/hooks";
-import { authService } from "../auth/services/auth.service";
-
-interface Order {
-  id: string;
-  date: string;
-  status: "delivered" | "in-progress" | "preparing";
-  total: number;
-  items: string[];
-  restaurant: string;
-  address: string;
-  rating?: number;
-}
 
 export default function ProfilePage() {
   const [isMobile, setIsMobile] = useState(false);
@@ -45,30 +27,6 @@ export default function ProfilePage() {
     return () => window.removeEventListener("resize", checkIsMobile);
   }, []);
 
-  const currentOrder: Order = {
-    id: "ORD-2024-001",
-    date: "2024-01-15",
-    status: "in-progress",
-    total: 1250,
-    items: ["Пицца Маргарита", "Кола 0.5л", "Салат Цезарь"],
-    restaurant: "Мама Мия",
-    address: "ул. Пушкина, д. 10, кв. 25",
-  };
-
-  const orderHistory: Order[] = [
-    {
-      id: "ORD-2024-002",
-      date: "2024-01-12",
-      status: "delivered",
-      total: 890,
-      items: ["Бургер Классик", "Картофель фри", "Милкшейк"],
-      restaurant: "Burger King",
-      address: "ул. Пушкина, д. 10, кв. 25",
-      rating: 5,
-    },
-  ];
-
-  // Табы для мобильной версии
   const items = [
     {
       key: "profile",
@@ -87,8 +45,6 @@ export default function ProfilePage() {
               <ProfileContentTab
                 isMobile={isMobile}
                 userInfo={user}
-                orderHistory={orderHistory}
-                currentOrder={currentOrder}
               />
             )}
           </ErrorBoundary>
@@ -133,7 +89,7 @@ export default function ProfilePage() {
       children: (
         <div style={{ padding: isMobile ? "16px 0" : "0" }}>
           <ErrorBoundary>
-            <HistoryContentTab orderHistory={orderHistory} />
+            <HistoryContentTab />
           </ErrorBoundary>
         </div>
       ),

@@ -29,13 +29,9 @@ import { userService } from "../services/user.service";
 const { Text, Title, Paragraph } = Typography;
 
 export const ProfileContentTab = ({
-  orderHistory,
-  currentOrder,
   isMobile,
   userInfo,
 }: {
-  orderHistory: any;
-  currentOrder: any;
   isMobile?: boolean;
   userInfo: any;
 }) => {

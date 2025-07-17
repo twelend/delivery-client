@@ -9,3 +9,5 @@ export function useGetHistoryMenu() {
 
   return { historyMenu, isLoadingHistoryMenu };
 }
+
+export type TypeHistoryMenu = Awaited<ReturnType<typeof useGetHistoryMenu>>;

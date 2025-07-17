@@ -14,10 +14,8 @@ const PhoneInputField = ({
   const formatPhoneNumber = (value: string | undefined): string => {
     if (!value) return "";
 
-    // Оставляем только цифры
     const cleaned = value.replace(/\D/g, "");
 
-    // Форматируем номер
     let formattedValue = "+7";
 
     if (cleaned.length > 1) {
